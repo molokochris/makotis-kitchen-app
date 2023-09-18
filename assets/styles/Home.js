@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     // padding: 2,
     height: 20,
     width: 20,
+    right: 0,
   },
   pill: {
     justifyContent: "center",
