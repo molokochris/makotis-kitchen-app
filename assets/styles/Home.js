@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     backgroundColor: "yellow",
     padding: "1%",
     marginBottom: 15,
-    borderRadius: 15,
+    // borderRadius: 15,
     alignItems: "center",
     justifyContent: "center",
     elevation: 2,
