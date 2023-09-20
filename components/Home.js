@@ -8,7 +8,7 @@ import {
   ImageBackground,
   Pressable,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import logo from "../assets/images/logo/Logo.png";
 import searchIcon from "../assets/images/logo/Search.png";
@@ -17,8 +17,10 @@ import main from "../assets/images/menu/boroso.jpg";
 import dessert from "../assets/images/menu/desert.jpg";
 import Notification from "../assets/images/logo/Notification.png";
 import styles from "../assets/styles/Home";
+import { firebase } from "../firebaseConfig";
 
 export default function Home({ navigation }) {
+  const [user, setUser] = useState("");
   return (
     <SafeAreaView style={[styles.container, { flex: 1 }]}>
       <StatusBar style="light" backgroundColor="#212529" translucent={true} />
