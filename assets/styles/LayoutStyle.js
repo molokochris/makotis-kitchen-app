@@ -31,7 +31,7 @@ const layoutStyles = StyleSheet.create({
   floatBar: {
     alignItems: "center",
     alignSelf: "center",
-    // zIndex: 1,
+    zIndex: 1,
     position: "relative",
     // position: "absolute",
     // bottom: "5%",
