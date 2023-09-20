@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#212529",
     // paddingTop: "10%",
     // height: "30%",
-    paddingHorizontal: 6,
+    paddingHorizontal: "4%",
     width: "100%",
     paddingTop: "2%",
     paddingBottom: "15%",
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     // height: 60,
   },
   locationText: {
-    color: "gray",
+    color: "#808080",
     fontSize: 15,
   },
   locationSubText: {
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     // alignSelf: "flex-end",
     borderWidth: 1,
     borderRadius: 100,
-    padding: "4%",
+    padding: 12,
     borderColor: "whitesmoke",
   },
   numNotification: {
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     height: 20,
     width: 20,
     right: 0,
+    // left: -0.2,
   },
   pill: {
     justifyContent: "center",
@@ -65,13 +66,33 @@ const styles = StyleSheet.create({
     borderColor: "whitesmoke",
     // paddingHorizontal: 18,
     // paddingVertical: 8,
+    zIndex: 1,
+    position: "absolute",
   },
   pillText: {
     color: "whitesmoke",
     fontWeight: "bold",
-
     fontSize: 14,
     textAlign: "center",
+  },
+  tab: {
+    height: 200,
+    // width: 150,
+    // backgroundColor: "yellow",
+    padding: "1%",
+    marginBottom: 15,
+    borderRadius: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    // elevation: 1,
+    flex: 1,
+  },
+  pillImage: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 15,
+    resizeMode: "center",
+    objectFit: "cover",
   },
   searchInput: {
     // flex: 2,
@@ -85,7 +106,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 15,
-    borderWidth: 1,
+    borderWidth: 0.8,
+    shadowOffset: 1,
     width: "90%",
     height: 56,
     borderColor: "#212529",
@@ -99,17 +121,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: "5%",
     // backgroundColor: "red",
     paddingTop: 30,
-  },
-  tab: {
-    height: 200,
-    // width: 150,
-    backgroundColor: "yellow",
-    padding: "1%",
-    marginBottom: 15,
-    // borderRadius: 15,
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 2,
   },
 });
 export default styles;

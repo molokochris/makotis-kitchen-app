@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
+import Layout from "./components/Layout";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -32,6 +33,20 @@ export default function App() {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="Layout"
+          component={Layout}
+          options={{
+            headerShown: false,
+          }}
+        />
+        {/* <Stack.Screen
+          name="Order"
+          component={Layout}
+          options={{
+            headerShown: false,
+          }}
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
