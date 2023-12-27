@@ -11,7 +11,10 @@ export default function App() {
   const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{ animation: "slide_from_left" }}
+      >
         <Stack.Screen
           name="Home"
           component={Home}
@@ -38,6 +41,8 @@ export default function App() {
           component={Layout}
           options={{
             headerShown: false,
+            // animationTypeForReplace: "push",
+            animation: "flip",
           }}
         />
         {/* <Stack.Screen

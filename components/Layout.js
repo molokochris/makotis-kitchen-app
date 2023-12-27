@@ -11,47 +11,98 @@ import React from "react";
 import logo from "../assets/images/logo/Logo.png";
 import styles from "../assets/styles/Home";
 import layoutStyles from "../assets/styles/LayoutStyle";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Layout({ navigation, route }) {
   return (
-    <SafeAreaView
-      style={[styles.container, { flex: 1, backgroundColor: "#212529" }]}
-    >
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <StatusBar />
-        <View style={{ paddingTop: "10%", flex: 1 }}>
-          <Image source={logo} style={styles.image} />
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#212529" }}>
+      <StatusBar translucent={false} />
+      <View
+        style={{
+          // flex: 1,
+          justifyContent: "space-evenly",
+          alignItems: "center",
+          flexDirection: "row",
+          // paddingVertical: "8%",
+          padding: 10,
+        }}
+      >
+        <Pressable style={{ flex: 1 }} onPress={() => navigation.goBack()}>
+          <Ionicons
+            name="arrow-back-circle-outline"
+            size={30}
+            color="whitesmoke"
+          />
+        </Pressable>
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <Text style={{ color: "whitesmoke", fontWeight: "500" }}>
+            {route.params.name}
+          </Text>
+          {/* <Image source={logo} style={styles.image} /> */}
         </View>
-        <View style={layoutStyles.peel}>
-          <View style={layoutStyles.topBar}>
-            <View style={{ width: "40%" }}>
-              <Pressable onPress={() => navigation.navigate("Home")}>
-                <Image
-                  source={require("../assets/images/menu/back.png")}
-                  style={layoutStyles.image}
-                />
-              </Pressable>
-            </View>
-            <Text style={layoutStyles.nameLayout}>{route.params.name}</Text>
-          </View>
-          <Text>This is the text</Text>
-          <Pressable
-            style={layoutStyles.floatBar}
-            // onPress={() => navigation.goBack()}
-            // onPress={() => navigation.navigate("Layout", { name: "Orders" })}
+        <View style={{ flex: 1 }}></View>
+      </View>
+      <ScrollView
+        style={{
+          flex: 1,
+          backgroundColor: "whitesmoke",
+          borderTopRightRadius: 20,
+          borderTopLeftRadius: 20,
+          padding: 10,
+        }}
+      >
+        <View style={{ flex: 9, paddingBottom: "25%" }}>
+          <View
+            style={{
+              width: "100%",
+              height: 60,
+              backgroundColor: "tomato",
+              borderRadius: 10,
+              padding: 10,
+              marginBottom: 10,
+            }}
           >
-            <Text
-              style={{
-                color: "whitesmoke",
-                fontSize: 25,
-                paddingLeft: 10,
-                fontWeight: "bold",
-                flex: 1,
-                // backgroundColor: "gray",
-              }}
-            >
-              Orders{" "}
-              {/* <View
+            <Text>Item</Text>
+          </View>
+        </View>
+      </ScrollView>
+      <View
+        style={{
+          // flex: 1,
+          alignSelf: "center",
+          borderRadius: 20,
+          zIndex: 2,
+          backgroundColor: "#212529",
+          position: "absolute",
+          bottom: 20,
+          // alignSelf: "baseline",
+          width: "98%",
+          // justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "row",
+          paddingVertical: "3%",
+          paddingHorizontal: 10,
+        }}
+      >
+        {/* <Pressable
+          style={layoutStyles.floatBar}
+          // onPress={() => navigation.goBack()}
+          // onPress={() => navigation.navigate("Layout", { name: "Orders" })} 
+        >*/}
+        <Text
+          style={{
+            color: "whitesmoke",
+            fontSize: 24,
+            paddingLeft: 10,
+            fontWeight: "500",
+            flex: 1,
+            // backgroundColor: "gray",
+          }}
+        >
+          Orders
+          {/* <View
                 style={{
                   flex: 1,
                   // height: 20,
@@ -63,11 +114,10 @@ export default function Layout({ navigation, route }) {
               >
                 <Text style={{ fontSize: 20, color: "whitesmoke" }}>5</Text>
               </View> */}
-            </Text>
-            <Text style={layoutStyles.price}>R 0, 00</Text>
-          </Pressable>
-        </View>
-      </ScrollView>
+        </Text>
+        <Text style={layoutStyles.price}>R 0, 00</Text>
+        {/* </Pressable> */}
+      </View>
     </SafeAreaView>
   );
 }

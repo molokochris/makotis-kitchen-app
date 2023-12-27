@@ -17,7 +17,8 @@ import main from "../assets/images/menu/boroso.jpg";
 import dessert from "../assets/images/menu/desert.jpg";
 import Notification from "../assets/images/logo/Notification.png";
 import styles from "../assets/styles/Home";
-import { firebase } from "../firebaseConfig";
+//import { firebase } from "../firebaseConfig";
+import { Entypo, Feather } from "@expo/vector-icons";
 
 export default function Home({ navigation }) {
   const [user, setUser] = useState("");
@@ -31,17 +32,19 @@ export default function Home({ navigation }) {
         <View>
           <View style={styles.head}>
             <View>
-              <Text style={styles.locationText}>Location</Text>
-              <Text style={styles.locationSubText}>Mankweng, Unit-E</Text>
+              {/* <Text style={styles.locationText}>Location</Text>
+              <Text style={styles.locationSubText}>Mankweng, Unit-E</Text> */}
+              <Entypo name="menu" size={30} color="whitesmoke" />
             </View>
             <View style={styles.bell}>
-              <Image style={{ width: 20, height: 20 }} source={Notification} />
+              {/* <Image style={{ width: 20, height: 20 }} source={Notification} /> */}
+              <Feather name="shopping-cart" size={20} color="whitesmoke" />
               <View style={styles.numNotification}>
                 <Text style={{ color: "#212529" }}>5</Text>
               </View>
             </View>
           </View>
-          <View style={styles.searchInput}>
+          {/* <View style={styles.searchInput}>
             <Image source={searchIcon} style={{ width: 30, height: 30 }} />
             <TextInput
               style={{ flex: 1, paddingVertical: 5 }}
@@ -50,7 +53,7 @@ export default function Home({ navigation }) {
               maxLength={15}
               selectionColor="#212529"
             />
-          </View>
+          </View> */}
         </View>
         <View style={styles.main}>
           <View style={styles.tab}>
