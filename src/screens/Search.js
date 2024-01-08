@@ -1,11 +1,10 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-export default function Login() {
+export default function Search() {
   return (
     <View>
-      <StatusBar />
-      <Text>Login</Text>
+      <Text>Search</Text>
     </View>
   );
 }
