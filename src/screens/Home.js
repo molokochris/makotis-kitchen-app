@@ -7,6 +7,7 @@ import {
   ImageBackground,
   Button,
   ActivityIndicator,
+  Pressable,
 } from "react-native";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import AppLogo from "../components/AppLogo";
@@ -17,6 +18,7 @@ import {
   MaterialCommunityIcons,
   AntDesign,
   Octicons,
+  FontAwesome6,
 } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -24,6 +26,7 @@ import { AuthContext } from "../context/AuthContext";
 import firebase from "firebase/compat/app";
 import { getStorage, list, ref, getDownloadURL } from "firebase/storage";
 import { firestore, storage } from "../firebase/firebase";
+import PopularItems from "../components/PopularItems";
 // import HomeSkeleton from "../components/HomeSkeleton";
 
 SplashScreen.preventAutoHideAsync();
@@ -35,6 +38,9 @@ export default function Home({ navigation }) {
   const [mainMenu, setMainMenu] = useState(null);
   const [sidesMenu, setSidesMenu] = useState(null);
   const [allMenu, setAllMenu] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [showItems, setShowItems] = useState("Best");
+  const [items, setItems] = useState([]);
 
   const [fontsLoaded] = useFonts({
     "Mansalva-Regular": require("../../assets/fonts/Mansalva/Mansalva-Regular.ttf"),
@@ -43,32 +49,36 @@ export default function Home({ navigation }) {
     "Inter-ExtraBold": require("../../assets/fonts/Inter/static/Inter-ExtraBold.ttf"),
     "Inter-Medium": require("../../assets/fonts/Inter/static/Inter-Medium.ttf"),
   });
-  const categories = ["dessert", "drinks", "meals", "sides", "salads"];
   const { logout } = useContext(AuthContext);
 
-  // useEffect(() => {
-  //   const fetchImages = async () => {
-  //     try {
-  //       setIsLoading(true);
-  //       const docSnap = await firestore.collection("menu").doc("main").get();
-  //       const allMenu = docSnap.data();
-  //       console.log(Object.keys(allMenu));
-  //       setAllMenu(allMenu);
-  //       setDessertMenu(allMenu.dessert);
-  //       setMainMenu(allMenu.main);
-  //       setSidesMenu(allMenu.sides);
-  //       setStartersMenu(allMenu.starters);
-  //       // Do something with the fetched data
-  //     } catch (error) {
-  //       console.error("Error fetching menu data:", error);
-  //       // Handle the error appropriately (e.g., display an error message)
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        setIsLoading(true);
+        const docSnap = await firestore.collection("menu").doc("main").get();
+        const querySnapshot = await firestore.collection("menu").get();
+        const allMenuData = querySnapshot.docs.map((doc) => doc.data());
 
-  //   fetchImages();
-  // }, []);
+        const allMenu = docSnap.data();
+        console.log(allMenuData);
+        setAllMenu(allMenuData);
+        setDessertMenu(allMenu.dessert);
+        setMainMenu(allMenu.main);
+        setSidesMenu(allMenu.sides);
+        setStartersMenu(allMenu.starters);
+        setCategories(Object.keys(allMenu));
+
+        // Do something with the fetched data
+      } catch (error) {
+        console.error("Error fetching menu data:", error);
+        // Handle the error appropriately (e.g., display an error message)
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchImages();
+  }, []);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -80,6 +90,13 @@ export default function Home({ navigation }) {
   }
   const handleLogout = () => {
     logout();
+  };
+  const handleCategoryPress = (category) => {
+    // console.log(allMenu[0][`${category}`]);
+    Object.keys(allMenu[0][category]).forEach((item) => {
+      setItems([allMenu[0][category][item]]);
+    });
+    setShowItems(category);
   };
   return (
     // <View
@@ -371,294 +388,339 @@ export default function Home({ navigation }) {
         <ActivityIndicator size={"large"} color={"#212529"} />
       </View>
     ) : (
-      <ScrollView contentContainerStyle={{}}>
-        <StatusBar
-          barStyle={"dark-content"}
-          // backgroundColor={"#212529"}
-          backgroundColor={"transparent"}
-          translucent={false}
-        />
-        <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
-          <View style={{ flex: 1 }}>
-            <View
-              style={{
-                flex: 1,
-                // backgroundColor: "#212529",
-                // flexDirection: "row",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingVertical: 10,
-                paddingHorizontal: 14,
-                borderBottomStartRadius: 18,
-                borderBottomEndRadius: 18,
-              }}
-            >
+      <View style={{ flex: 1 }}>
+        <ScrollView alwaysBounceHorizontal={true} style={{ flex: 1 }}>
+          <StatusBar
+            barStyle={"dark-content"}
+            // backgroundColor={"#212529"}
+            backgroundColor={"transparent"}
+            translucent={false}
+          />
+          <View
+            onLayout={onLayoutRootView}
+            style={{ flex: 1, marginBottom: "2%" }}
+          >
+            <View style={{ flex: 1 }}>
               <View
                 style={{
                   flex: 1,
-                  flexDirection: "row",
+                  // backgroundColor: "#212529",
+                  // flexDirection: "row",
+                  flexDirection: "column",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  // backgroundColor: "red",
-                  width: "100%",
+                  paddingVertical: 10,
+                  paddingHorizontal: 14,
+                  borderBottomStartRadius: 18,
+                  borderBottomEndRadius: 18,
                 }}
               >
-                <View style={{ width: 40 }}></View>
-                <AppLogo color={"#212529"} />
                 <View
                   style={{
-                    width: 35,
-                    height: 35,
-                    backgroundColor: "whitesmoke",
-                    borderRadius: 100,
-                    justifyContent: "center",
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
                     alignItems: "center",
-                    borderWidth: 0.5,
-                    borderColor: "gray",
+                    // backgroundColor: "red",
+                    width: "100%",
                   }}
                 >
-                  <Octicons name="bell" size={18} color="#212529" />
+                  <View style={{ width: 40 }}></View>
+                  <AppLogo color={"#212529"} />
+                  <View
+                    style={{
+                      width: 35,
+                      height: 35,
+                      backgroundColor: "whitesmoke",
+                      borderRadius: 100,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderWidth: 0.5,
+                      borderColor: "gray",
+                    }}
+                  >
+                    <Octicons name="bell" size={18} color="#212529" />
+                  </View>
                 </View>
               </View>
-            </View>
-            <View
-              style={{
-                flex: 9,
-                // backgroundColor: "yellow",
-                // paddingHorizontal: 10,
-              }}
-            >
-              <View style={{ paddingHorizontal: 4 }}>
-                <ImageBackground
-                  source={{
-                    uri: "https://firebasestorage.googleapis.com/v0/b/makotis-kitchen.appspot.com/o/20231228_014040.jpg?alt=media&token=6d4516a6-0835-4b1d-ab43-191854bea7b4",
-                  }}
-                  style={{
-                    width: "100%",
-                    // backgroundColor: "#212529",
-                    height: 120,
-                    // flex: 1,
-                    borderRadius: 8,
-                    marginBottom: 10,
-                  }}
-                  resizeMode="cover"
-                  imageStyle={{
-                    borderRadius: 8,
-                  }}
-                >
-                  <View
+              <View
+                style={{
+                  flex: 9,
+                  // backgroundColor: "yellow",
+                  // paddingHorizontal: 10,
+                }}
+              >
+                <View style={{ paddingHorizontal: 4 }}>
+                  <ImageBackground
+                    source={{
+                      uri: "https://firebasestorage.googleapis.com/v0/b/makotis-kitchen.appspot.com/o/20231228_014040.jpg?alt=media&token=6d4516a6-0835-4b1d-ab43-191854bea7b4",
+                    }}
                     style={{
-                      flex: 1,
-                      backgroundColor: "rgba(1,1,1,.3)",
                       width: "100%",
+                      // backgroundColor: "#212529",
+                      height: 120,
+                      // flex: 1,
                       borderRadius: 8,
-                      padding: 10,
-                      justifyContent: "center",
+                      marginBottom: 10,
+                    }}
+                    resizeMode="cover"
+                    imageStyle={{
+                      borderRadius: 8,
                     }}
                   >
-                    <View>
-                      <Text
-                        style={{
-                          fontFamily: "Inter-Bold",
-                          color: "whitesmoke",
-                          fontSize: 28,
-                        }}
-                      >
-                        Good Food.
-                      </Text>
-                      <Text
-                        style={{
-                          fontFamily: "Inter-Bold",
-                          color: "whitesmoke",
-                          fontSize: 28,
-                        }}
-                      >
-                        Fast delivery.
-                      </Text>
-                    </View>
-                  </View>
-                </ImageBackground>
-              </View>
-              <View style={{ marginVertical: 4, marginLeft: 4 }}>
-                <ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                >
-                  <View
-                    style={{
-                      backgroundColor: "whitesmoke",
-                      padding: 10,
-                      marginRight: 4,
-                      // paddingHorizontal: 15,
-                      // paddingVertical: 10,
-                      width: 70,
-                      borderRadius: 6,
-                      borderWidth: 0.5,
-                      borderColor: "#343A40",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <Ionicons
-                      name="fast-food-outline"
-                      size={22}
-                      color="#343A40"
+                    <View
                       style={{
-                        backgroundColor: "white",
-                        borderRadius: 100,
-                        // padding: 2,
-                      }}
-                    />
-                    <Text
-                      style={{
-                        color: "#343A40",
-                        fontFamily: "Inter-Regular",
-                        fontSize: 12,
-                        marginLeft: 3,
+                        flex: 1,
+                        backgroundColor: "rgba(1,1,1,.3)",
+                        width: "100%",
+                        borderRadius: 8,
+                        padding: 10,
+                        justifyContent: "center",
                       }}
                     >
-                      main
-                    </Text>
-                  </View>
-                  {categories.map((item, index) => {
-                    return (
-                      <View
-                        style={{
-                          backgroundColor: "whitesmoke",
-                          padding: 10,
-                          marginRight: 4,
-                          // paddingHorizontal: 15,
-                          // paddingVertical: 10,
-                          width: 70,
-                          borderRadius: 6,
-                          borderWidth: 0.5,
-                          borderColor: "#343A40",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          flexDirection: "column",
-                        }}
-                        key={index}
-                      >
-                        {item == "dessert" ? (
-                          <MaterialCommunityIcons
-                            name="cupcake"
-                            size={22}
-                            color="#343A40"
-                            style={{
-                              backgroundColor: "white",
-                              borderRadius: 100,
-                              // padding: 2,
-                            }}
-                          />
-                        ) : item == "drinks" ? (
-                          <Entypo
-                            name="drink"
-                            size={22}
-                            color="#343A40"
-                            style={{
-                              backgroundColor: "white",
-                              borderRadius: 100,
-                              // padding: 2,
-                            }}
-                          />
-                        ) : (
-                          <Ionicons
-                            name="fast-food-outline"
-                            size={22}
-                            color="#343A40"
-                            style={{
-                              backgroundColor: "white",
-                              borderRadius: 100,
-                              // padding: 2,
-                            }}
-                          />
-                        )}
+                      <View>
                         <Text
                           style={{
-                            color: "#343A40",
-                            fontFamily: "Inter-Regular",
-                            fontSize: 12,
-                            marginLeft: 3,
+                            fontFamily: "Inter-Bold",
+                            color: "whitesmoke",
+                            fontSize: 28,
                           }}
                         >
-                          {item}
+                          Good Food.
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily: "Inter-Bold",
+                            color: "whitesmoke",
+                            fontSize: 28,
+                          }}
+                        >
+                          Fast delivery.
                         </Text>
                       </View>
+                    </View>
+                  </ImageBackground>
+                </View>
+                <View style={{ marginVertical: 4, marginLeft: 4 }}>
+                  <ScrollView
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                  >
+                    <Pressable
+                      style={{
+                        backgroundColor:
+                          showItems == "Best" ? "rgba(0,0,0,.1)" : "whitesmoke",
+                        padding: 10,
+                        marginRight: 4,
+                        // paddingHorizontal: 15,
+                        // paddingVertical: 10,
+                        width: 70,
+                        borderRadius: 6,
+                        borderWidth: showItems == "Best" ? 0.5 : 0,
+                        borderColor: "#343A40",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        flexDirection: "column",
+                      }}
+                      onPress={() => setShowItems("Best")}
+                    >
+                      <FontAwesome6
+                        name="bowl-food"
+                        size={22}
+                        color="#343A40"
+                        style={{
+                          backgroundColor: "white",
+                          borderRadius: 100,
+                          // padding: 2,
+                        }}
+                      />
+                      <Text
+                        style={{
+                          color: "#343A40",
+                          fontFamily: "Inter-Medium",
+                          fontSize: 12,
+                          marginLeft: 3,
+                        }}
+                      >
+                        Best
+                      </Text>
+                    </Pressable>
+                    {categories.map((item, index) => {
+                      return (
+                        <Pressable
+                          style={{
+                            backgroundColor:
+                              showItems == item
+                                ? "rgba(0,0,0,.1)"
+                                : "whitesmoke",
+                            padding: 10,
+                            marginRight: 4,
+                            // paddingHorizontal: 15,
+                            // paddingVertical: 10,
+                            width: 70,
+                            borderRadius: 6,
+                            borderWidth: showItems == item ? 0.5 : 0,
+                            borderColor: "#343A40",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            flexDirection: "column",
+                          }}
+                          onPress={() => handleCategoryPress(item)}
+                          key={index}
+                        >
+                          {item == "dessert" ? (
+                            <MaterialCommunityIcons
+                              name="cupcake"
+                              size={22}
+                              color="#343A40"
+                              style={{
+                                backgroundColor: "white",
+                                borderRadius: 100,
+                                // padding: 2,
+                              }}
+                            />
+                          ) : item == "sides" ? (
+                            <MaterialCommunityIcons
+                              name="food-variant"
+                              size={22}
+                              color="#343A40"
+                              style={{
+                                backgroundColor: "white",
+                                borderRadius: 100,
+                                // padding: 2,
+                              }}
+                            />
+                          ) : item == "main" ? (
+                            <MaterialCommunityIcons
+                              name="food-steak"
+                              size={22}
+                              color="#343A40"
+                              style={{
+                                backgroundColor: "white",
+                                borderRadius: 100,
+                                // padding: 2,
+                              }}
+                            />
+                          ) : item == "drinks" ? (
+                            <Entypo
+                              name="drink"
+                              size={22}
+                              color="#343A40"
+                              style={{
+                                backgroundColor: "white",
+                                borderRadius: 100,
+                                // padding: 2,
+                              }}
+                            />
+                          ) : (
+                            <Ionicons
+                              name="fast-food-outline"
+                              size={22}
+                              color="#343A40"
+                              style={{
+                                backgroundColor: "white",
+                                borderRadius: 100,
+                                // padding: 2,
+                              }}
+                            />
+                          )}
+                          <Text
+                            style={{
+                              color: "#343A40",
+                              fontFamily: "Inter-Regular",
+                              fontSize: 12,
+                              marginLeft: 3,
+                            }}
+                          >
+                            {item}
+                          </Text>
+                        </Pressable>
+                      );
+                    })}
+                  </ScrollView>
+                </View>
+                {showItems == "Best" ? (
+                  <View style={{ flex: 1 }}>
+                    <Text
+                      style={{
+                        marginVertical: 10,
+                        marginLeft: 10,
+                        fontFamily: "Inter-Bold",
+                      }}
+                    >
+                      Popular now
+                    </Text>
+                    <PopularItems allMenu={allMenu} />
+                  </View>
+                ) : (
+                  items.map((item, index) => {
+                    return (
+                      <View style={{ flex: 1 }} key={index}>
+                        <ImageBackground
+                          source={{ uri: item.imageUrl }}
+                          style={{
+                            width: 180,
+                            height: 200,
+                            backgroundColor: "red",
+                            borderRadius: 12,
+                            padding: 10,
+                            marginRight: 10,
+                          }}
+                          imageStyle={{ resizeMode: "cover", borderRadius: 12 }}
+                        />
+                      </View>
                     );
-                  })}
-                </ScrollView>
+                  })
+                  // <View style={{ flex: 1 }}>
+                  //   <Text>No items</Text>
+                  // </View>
+                )}
               </View>
-              <View style={{ flex: 1 }}>
-                <Text
+              <ImageBackground
+                source={{
+                  uri: "https://firebasestorage.googleapis.com/v0/b/makotis-kitchen.appspot.com/o/20231228_014328.jpg?alt=media&token=def1a435-e665-464a-9075-e2f26c1b347f",
+                }}
+                style={{
+                  flex: 1,
+                  backgroundColor: "#212529",
+                  marginVertical: 4,
+                }}
+                imageStyle={{ resizeMode: "cover" }}
+              >
+                <View
                   style={{
-                    marginVertical: 10,
-                    marginLeft: 10,
-                    fontFamily: "Inter-Bold",
+                    backgroundColor: "rgba(1,1,1,.8)",
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: 10,
                   }}
                 >
-                  Popular now
-                </Text>
-                <ScrollView horizontal={true}>
-                  <View
+                  <Text
                     style={{
-                      flex: 1,
-                      width: "100%",
-                      height: "100%",
-                      flexDirection: "row",
+                      color: "whitesmoke",
+                      fontFamily: "Inter-Bold",
+                      marginBottom: 10,
                     }}
                   >
-                    <View
-                      style={{
-                        width: 150,
-                        height: 200,
-                        backgroundColor: "red",
-                        padding: 10,
-                        marginRight: 10,
-                      }}
-                    />
-                    <View
-                      style={{
-                        width: 150,
-                        height: 200,
-                        backgroundColor: "red",
-                        padding: 10,
-                        marginRight: 10,
-                      }}
-                    />
-                    <View
-                      style={{
-                        width: 150,
-                        height: 200,
-                        backgroundColor: "red",
-                        padding: 10,
-                        marginRight: 10,
-                      }}
-                    />
-                  </View>
-                </ScrollView>
-              </View>
-            </View>
-            <View
-              style={{
-                // flex: 1,
-                // backgroundColor: "#212529",
-                marginVertical: 4,
-                padding: 20,
-                height: 200,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              {/* <Image
-              source={require("../../assets/images/Logo.png")}
-              style={{ width: 50, resizeMode: "center" }}
-            /> */}
+                    Come experience our five star cousine
+                  </Text>
+                  <Image
+                    source={require("../../assets/images/Logo.png")}
+                    style={{
+                      width: 50,
+                      height: 100,
+                      resizeMode: "center",
+                      borderWidth: 1,
+                      borderColor: "yellow",
+                    }}
+                  />
+                </View>
+              </ImageBackground>
             </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     )
   );
 }
