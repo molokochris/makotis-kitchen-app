@@ -19,6 +19,7 @@ import {
   AntDesign,
   Octicons,
   FontAwesome6,
+  MaterialIcons,
 } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -163,7 +164,12 @@ export default function Home({ navigation }) {
                     borderColor: "gray",
                   }}
                 >
-                  <Octicons name="bell" size={18} color="#212529" />
+                  {/* <Octicons name="bell" size={18} color="#212529" /> */}
+                  <MaterialCommunityIcons
+                    name="cart-outline"
+                    size={18}
+                    color={"#212529"}
+                  />
                 </View>
               </View>
             </View>
@@ -407,10 +413,39 @@ export default function Home({ navigation }) {
                             flex: 1,
                             width: "100%",
                             borderRadius: 18,
-                            backgroundColor: "rgba(1,1,1,.3)",
+                            backgroundColor: "rgba(1,1,1,.4)",
                             padding: 10,
+                            justifyContent: "center",
+                            alignItems: "center",
                           }}
-                        ></View>
+                        >
+                          <View
+                            style={{
+                              borderWidth: 1,
+                              borderColor: "whitesmoke",
+                              borderRadius: 25,
+                              paddingLeft: 10,
+                              // paddingVertical: 4,
+                              justifyContent: "space-evenly",
+                              alignItems: "center",
+                              flexDirection: "row",
+                            }}
+                          >
+                            <Text
+                              style={{
+                                fontFamily: "Inter-Bold",
+                                color: "whitesmoke",
+                              }}
+                            >
+                              R {item.price}
+                            </Text>
+                            <MaterialIcons
+                              name="add-circle"
+                              size={25}
+                              color={"whitesmoke"}
+                            />
+                          </View>
+                        </View>
                       </ImageBackground>
                     );
                   })}

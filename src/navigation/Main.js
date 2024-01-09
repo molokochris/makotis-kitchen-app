@@ -6,6 +6,7 @@ import {
   Fontisto,
   FontAwesome,
   Feather,
+  MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import Home from "../screens/Home";
 import Cart from "../screens/Cart";
@@ -72,6 +73,21 @@ export default function Main({ route }) {
           },
         }}
       />
+      {/* <Tab.Screen
+        name="Cart"
+        component={Cart}
+        options={{
+          tabBarIcon: ({ color, size }) => {
+            return (
+              <MaterialCommunityIcons
+                name="cart-outline"
+                size={20}
+                color={color}
+              />
+            );
+          },
+        }}
+      /> */}
       <Tab.Screen
         name="Profile"
         component={Profile}
