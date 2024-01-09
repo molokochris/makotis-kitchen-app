@@ -156,7 +156,7 @@ export default function Home({ navigation }) {
                   style={{
                     width: 35,
                     height: 35,
-                    backgroundColor: "whitesmoke",
+                    backgroundColor: "#212529",
                     borderRadius: 100,
                     justifyContent: "center",
                     alignItems: "center",
@@ -168,8 +168,26 @@ export default function Home({ navigation }) {
                   <MaterialCommunityIcons
                     name="cart-outline"
                     size={18}
-                    color={"#212529"}
+                    // color={"#212529"}
+                    color={"whitesmoke"}
                   />
+                  <Text
+                    style={{
+                      color: "whitesmoke",
+                      width: 12,
+                      height: 12,
+                      fontSize: 9,
+                      borderRadius: 100,
+                      backgroundColor: "tomato",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      fontFamily: "Inter-Medium",
+                      position: "absolute",
+                      top: 0,
+                    }}
+                  >
+                    9+
+                  </Text>
                 </View>
               </View>
             </View>
@@ -399,6 +417,8 @@ export default function Home({ navigation }) {
                           borderRadius: 18,
                           backgroundColor: "red",
                           marginBottom: 4,
+                          elevation: 5,
+                          shadowColor: "#666666",
                         }}
                         imageStyle={{
                           resizeMode: "cover",
